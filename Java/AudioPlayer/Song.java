@@ -3,6 +3,8 @@ package fpg;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 import javax.sound.sampled.AudioInputStream;
@@ -14,7 +16,8 @@ public class Song {
 	private ArrayList<File> songs = new ArrayList<File>();
 	private AudioInputStream audio;
 	private Clip sound;
-	private String songName;
+	private ArrayList<String> songName = new ArrayList<String>();
+	private String currentSong;
 	private int index = 0;
 	
 	public Song(final String filename)
@@ -22,12 +25,14 @@ public class Song {
 		File file = new File(filename);
 		try 
 		{
-			BufferedReader br = new BufferedReader(new FileReader(file));
+			InputStream is = Song.class.getResourceAsStream("/songs.txt");
+			BufferedReader br = new BufferedReader(new InputStreamReader(is));
 			String line;
 			while((line = br.readLine()) != null)
 			{
-				File current = new File("music/" + line);
+				File current = new File("music/" + line);// = new File("/music/" + line);
 				this.songs.add(current);
+				this.songName.add(line);
 			}
 			br.close();
 			
@@ -39,8 +44,10 @@ public class Song {
 	
 	public void play()
 	{
-		this.songName = this.songs.get(index).toString().replace("music\\", "");
+		this.currentSong = this.songName.get(index);
 		try {
+			if(this.sound != null)
+				this.sound.stop();
 			this.audio = AudioSystem.getAudioInputStream(this.songs.get(index));
 			this.sound = AudioSystem.getClip();
 			this.sound.open(audio);
@@ -55,9 +62,9 @@ public class Song {
 	
 	public void stop()
 	{
-		if(this.songName == null || this.sound == null)
+		if(this.currentSong == null || this.sound == null)
 		{
-			this.songName = "You cannot pause nothing...";
+			this.currentSong = "You cannot pause nothing...";
 			return;
 		}
 		this.sound.stop();
@@ -69,12 +76,12 @@ public class Song {
 		this.index += 1;
 		if(index >= this.songs.size())
 			index = 0;
-		this.songName = this.songs.get(index).toString().replace("music\\", "");
+		this.currentSong = this.songName.get(index);
 	}
 	
 	public String getSongName()
 	{
-		return this.songName;
+		return this.currentSong;
 	}
 	
 }
