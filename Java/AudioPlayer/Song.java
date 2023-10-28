@@ -55,7 +55,7 @@ public class Song {
 	
 	public void stop()
 	{
-		if(this.songName == null)
+		if(this.songName == null || this.sound == null)
 		{
 			this.songName = "You cannot pause nothing...";
 			return;
