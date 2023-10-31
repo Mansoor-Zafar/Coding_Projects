@@ -19,7 +19,6 @@ public class ClockGUI{
 		this.window.setResizable(false);
 		this.window.setLayout(null);
 		
-		
 		this.window.getContentPane().setBackground(Color.gray);
 		
 		this.time = new JLabel("Getting time...");
