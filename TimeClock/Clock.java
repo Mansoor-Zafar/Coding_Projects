@@ -7,11 +7,10 @@ import javax.swing.JLabel;
 public class Clock {
 	
 	private SimpleDateFormat timeFormat;
-	private String time = "";
+	private String time = "One Second...";
 	
 	public void setTime(JLabel txt)
 	{
-		System.out.println("I RAN");
 		while(true)
 		{
 			txt.setText(time);
